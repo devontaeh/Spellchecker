@@ -11,8 +11,10 @@ public class Spell {
 
 
     Spell(){
-        // Load dictionary words from file into Hashtable
 
+        for (int i = 0; i <= 10; i = i + 2) {
+            System.out.println(i);
+        }
         // add your code here
 
         // Load words in fileToCheck.txt
