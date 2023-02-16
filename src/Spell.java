@@ -33,11 +33,11 @@ public class Spell {
         ArrayList<String> wordsToCheck = getWordsToCheck();
 
 
-        for(int i = 0; i<wordsToCheck.size(); i++){
-            if (!checkSpelling(wordsToCheck.get(i))){
-            suggestCorrections(wordsToCheck.get(i));
+        for (int i = 0; i < wordsToCheck.size(); i++) {
+            if (!checkSpelling(wordsToCheck.get(i))) {
+                suggestCorrections(wordsToCheck.get(i));
             } else {
-            System.out.printf("%s: Correct Spelling\n", wordsToCheck.get(i));
+                System.out.printf("%s: Correct Spelling\n", wordsToCheck.get(i));
             }
         }
 
@@ -162,6 +162,7 @@ public class Spell {
 
     }
 
+
     // This function tries swapping every pair of adjacent characters
     // and check if the resulting new word is in the dictionary.Re
 //    static String correctSpellingWithReversal(String word) {
@@ -177,5 +178,5 @@ public class Spell {
 //        return reversal;
 //    }
 //
-//}
+}
 
