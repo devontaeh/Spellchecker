@@ -7,3 +7,5 @@ play
 hello
 parent
 abroad
+palm
+plum
