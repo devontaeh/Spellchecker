@@ -1,6 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Array;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Spell {
@@ -77,10 +77,11 @@ public class Spell {
                 System.out.printf("%s ", wd);
             }
             System.out.println();
-
-
+        } else if (correctSpellingWithReversal(word) != null) {
+            System.out.println();
+            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingWithReversal(word));
         }
-//        correctSpellingWithReversal(word);
+
         return true;
     }
 
@@ -112,7 +113,8 @@ public class Spell {
 
     // This function tries to omit (in turn, one by one) a single character in the misspelled word
     // and check if the resulting new word is in the dictionary.
-    static String correctSpellingWithOmission(String word) {
+    static ArrayList<String> correctSpellingWithOmission(String word) {
+        ArrayList<String> wordList = new ArrayList<>();
 
 
         for (int i = 0; i < word.length(); i++) {
@@ -123,13 +125,13 @@ public class Spell {
 
             if (checkSpelling(omission)) {
 
-                return omission;
+                wordList.add(omission);
 
             }
 
         }
 
-        return null;
+        return wordList;
     }
 
     //
@@ -165,18 +167,24 @@ public class Spell {
 
     // This function tries swapping every pair of adjacent characters
     // and check if the resulting new word is in the dictionary.Re
-//    static String correctSpellingWithReversal(String word) {
-//        String reversal = "";
-//
-//        char[] wordArr = word.toCharArray();
-//        for(char letter : wordArr){
-//            indexOF
-//        }
-//
-//
-//
-//        return reversal;
-//    }
-//
+    static ArrayList<String> correctSpellingWithReversal(String word) {
+        ArrayList<String> wordList = new ArrayList<>();
+
+
+        for (int i = 0; i < word.length() - 1; i++) {
+            char[] wordArr = word.toCharArray();
+            char temp = wordArr[i];
+            wordArr[i] = wordArr[i + 1];
+            wordArr[i + 1] = temp;
+            String reversal = new String(wordArr);
+            if (checkSpelling(reversal)) {
+                wordList.add(reversal);
+            }
+        }
+
+
+        return wordList;
+    }
+
 }
 
