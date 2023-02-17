@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Array;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Spell {
@@ -66,21 +68,23 @@ public class Spell {
         ArrayList<String> insertion = correctSpellingWithInsertion(word);
         Set<String> suggestedWords = new HashSet<>(insertion);
 
+        System.out.println(correctSpellingWithInsertion(word.toLowerCase()));
 
-        if (correctSpellingSubstitution(word) != null) {
-            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingSubstitution(word));
-        } else if (correctSpellingWithOmission(word) != null) {
-            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingWithOmission(word));
-        } else if (!insertion.isEmpty()) {
-            System.out.printf("%s => ", word.toLowerCase());
-            for (String wd : insertion) {
-                System.out.printf("%s ", wd);
-            }
-            System.out.println();
+//        if (correctSpellingSubstitution(word) != null) {
+//            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingSubstitution(word));
+//        } else if (correctSpellingWithOmission(word) != null) {
+//            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingWithOmission(word));
+//        } else if (!insertion.isEmpty()) {
+//            System.out.printf("%s => ", word.toLowerCase());
+//            for (String wd : insertion) {
+//                System.out.printf("%s ", wd);
+//            }
+//            System.out.println();
+//        } else if (correctSpellingWithReversal(word) != null) {
+//            System.out.println();
+//            System.out.printf("%s => %s\n", word.toLowerCase(), correctSpellingWithReversal(word));
+//        }
 
-
-        }
-//        correctSpellingWithReversal(word);
         return true;
     }
 
@@ -112,24 +116,19 @@ public class Spell {
 
     // This function tries to omit (in turn, one by one) a single character in the misspelled word
     // and check if the resulting new word is in the dictionary.
-    static String correctSpellingWithOmission(String word) {
+    static ArrayList<String> correctSpellingWithOmission(String word) {
+        ArrayList<String> wordList = new ArrayList<>();
 
-
-        for (int i = 0; i < word.length(); i++) {
-            ArrayList<String> list = new ArrayList<>(Arrays.asList(word.toLowerCase().split("")));
-
-            list.remove(i);
-            String omission = String.join("", list);
-
-            if (checkSpelling(omission)) {
-
-                return omission;
-
+        for (int i = 0; i < word.length() - 1; i++) {
+            String omissionWord = word.toLowerCase();
+            omissionWord = omissionWord.substring(0, i) + omissionWord.substring(i + 1);
+            if (checkSpelling(omissionWord)) {
+                wordList.add(omissionWord);
             }
-
         }
 
-        return null;
+
+        return wordList;
     }
 
     //
@@ -140,23 +139,38 @@ public class Spell {
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
 
-//        List<Character> wordList = new ArrayList<>();
+//        List<Character> wordList = new ArrayList<>()
 
 
+        //iterate through word to place new char
         for (int i = 0; i < word.length() + 1; i++) {
+            //create a word array of length +!
+            char[] wordArr = new char[word.length() + 1];
 
+            //place values up to insert point => i
+            for (int j = 0; j < i; j++) {
+
+                wordArr[j] = word.toLowerCase().charAt(j);
+
+
+            }
+            for (int k = i; k < wordArr.length - 1; k++) {
+                wordArr[k + 1] = word.toLowerCase().charAt(k);
+
+            }
             for (char letter : alphabet) {
-                ArrayList<String> wordList = new ArrayList<>(Arrays.asList(word.toLowerCase().split("")));
-                wordList.add(i, String.valueOf(letter));
-                String newWord = String.join("", wordList);
-
-                if (checkSpelling(newWord)) {
-                    insertion.add(newWord);
+                wordArr[i] = letter;
+                String subWord = new String(wordArr);
+                if (checkSpelling(subWord)) {
+                    insertion.add(subWord);
                 }
             }
 
+
         }
 
+
+//
 
         return insertion;
 
@@ -165,18 +179,24 @@ public class Spell {
 
     // This function tries swapping every pair of adjacent characters
     // and check if the resulting new word is in the dictionary.Re
-//    static String correctSpellingWithReversal(String word) {
-//        String reversal = "";
-//
-//        char[] wordArr = word.toCharArray();
-//        for(char letter : wordArr){
-//            indexOF
-//        }
-//
-//
-//
-//        return reversal;
-//    }
-//
+    static ArrayList<String> correctSpellingWithReversal(String word) {
+        ArrayList<String> wordList = new ArrayList<>();
+
+
+        for (int i = 0; i < word.length() - 1; i++) {
+            char[] wordArr = word.toCharArray();
+            char temp = wordArr[i];
+            wordArr[i] = wordArr[i + 1];
+            wordArr[i + 1] = temp;
+            String reversal = new String(wordArr);
+            if (checkSpelling(reversal)) {
+                wordList.add(reversal);
+            }
+        }
+
+
+        return wordList;
+    }
+
 }
 
